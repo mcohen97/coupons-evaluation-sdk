@@ -1,5 +1,6 @@
 require 'faraday'
 require 'faraday_middleware'
+require_relative './evaluation_response.rb'
 
 class PromotionsService
 
@@ -42,12 +43,21 @@ def post(url, payload)
     request.body = payload.to_json
   end
   
-  return {status: resp.status, response: JSON.parse(resp.body) }
-
+  return create_response(resp)
 
 rescue Faraday::Error::ConnectionFailed => e
+  return EvaluationResponse.new(success: false, message: e.message)
+end
 
-
+def create_response(resp)
+  body = JSON.parse(resp.body)
+  successful = resp.status < 300
+  if ! successful
+    response = EvaluationResponse.new(success: success, message: body['error_message'])
+  else
+    response = EvaluationResponse.new(success: success, message: 'Success!', payload: body)
+  end
+  return response
 end
 
 end
