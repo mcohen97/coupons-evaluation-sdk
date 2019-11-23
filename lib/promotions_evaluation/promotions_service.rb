@@ -4,16 +4,18 @@ require_relative './evaluation_response.rb'
 
 class PromotionsService
 
-PROMOTIONS_SERVER_URL = 'http://localhost:3000'
+@promotions_server_url = 'http://localhost:3000'
 
-PROMOTIONS_SERVER_ROUTE = '/promotions/evaluate'
+@promotions_server_route = '/promotions/evaluate'
 
-def self.instance()
+def self.instance(url, route)
+  @promotions_server_url = url
+  @promotions_server_route = route
   @instace || PromotionsService.new()
 end
 
 def evaluate(body)
-  response = post PROMOTIONS_SERVER_ROUTE, body
+  response = post @promotions_server_route, body
   puts "La respuesta es #{response.inspect}"
 end
 
@@ -26,7 +28,7 @@ end
   
 def create_connection
     
-  conn = Faraday.new(url: PROMOTIONS_SERVER_URL) do |c|
+  conn = Faraday.new(url: @promotions_server_url) do |c|
     c.response :logger
     c.request :json
     c.use Faraday::Adapter::NetHttp
