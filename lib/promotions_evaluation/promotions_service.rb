@@ -4,14 +4,10 @@ require_relative './evaluation_response.rb'
 
 class PromotionsService
 
-@promotions_server_url = 'http://localhost:3000'
-
-@promotions_server_route = '/promotions/evaluate'
-
-def self.instance(url, route)
+def initialize(url, route)
   @promotions_server_url = url
   @promotions_server_route = route
-  @instace || PromotionsService.new()
+  @connection = create_connection
 end
 
 def evaluate(body)
@@ -19,12 +15,7 @@ def evaluate(body)
   puts "La respuesta es #{response.inspect}"
 end
 
-
 private
-
-def initialize
-  @connection = create_connection
-end
   
 def create_connection
     
@@ -55,9 +46,9 @@ def create_response(resp)
   body = JSON.parse(resp.body)
   successful = resp.status < 300
   if ! successful
-    response = EvaluationResponse.new(success: success, message: body['error_message'])
+    response = EvaluationResponse.new(success: successful, message: body['error_message'])
   else
-    response = EvaluationResponse.new(success: success, message: 'Success!', payload: body)
+    response = EvaluationResponse.new(success: successful, message: 'Success!', payload: body)
   end
   return response
 end

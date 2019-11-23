@@ -3,8 +3,9 @@ require "./lib/promotions_evaluation/promotions_service.rb"
 
 module PromotionsEvaluation end
 
-class Evaluator
+class PromotionsEvaluator
   def self.perform_evaluation(url, route, arguments)
-    PromotionsService.instance(url, route).evaluate(arguments)
+    service = PromotionsService.new(url, route)
+    service.evaluate(arguments)
   end
 end
