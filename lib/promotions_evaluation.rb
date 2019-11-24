@@ -41,7 +41,6 @@ class EvaluationParameters
      base_body[:user] = @user_id
     end
 
-    puts "BODY: #{base_body.inspect}"
     return base_body
   end
 end

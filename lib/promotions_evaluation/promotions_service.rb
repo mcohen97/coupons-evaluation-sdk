@@ -18,7 +18,6 @@ end
 def evaluate(promo_code, body)
   route = PROMOTIONS_SERVER_ROUTE_1 + promo_code + PROMOTIONS_SERVER_ROUTE_2
   response = post route, body.generate_request_body()
-  puts "La respuesta es #{response.inspect}"
 end
 
 private
@@ -41,8 +40,6 @@ end
 
 def post(url, payload)
 
-  puts payload
-  
   resp = @connection.post url do |request|
     #request.headers["Authorization"] = authorization
     request.headers['Content-Type'] = 'application/json'
@@ -57,7 +54,6 @@ end
 
 def create_response(resp)
   body = JSON.parse(resp.body)
-  puts body.inspect
   successful = resp.status < 300
   if ! successful
     response = EvaluationResponse.new(success: successful, message: body[SERVER_ERROR_MESAGE_KEY])
