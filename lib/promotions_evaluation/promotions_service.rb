@@ -4,7 +4,7 @@ require_relative './evaluation_response.rb'
 
 class PromotionsService
 
-PROMOTIONS_SERVER_URL = 'https://coupons-evaluation.herokuapp.com'
+PROMOTIONS_SERVER_URL = 'https://coupons-gateway.herokuapp.com'
 PROMOTIONS_SERVER_ROUTE_1 = '/v1/promotions/'
 PROMOTIONS_SERVER_ROUTE_2 = '/evaluate'
 SERVER_ERROR_MESAGE_KEY = 'error'
